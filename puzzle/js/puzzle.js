@@ -7,14 +7,20 @@ var column = 3; // 列数
 var imageWidth = (backgroundWidth - (padding * (column + 1))) / column; // 图片宽度
 
 var imageIndexForPosition = [0, 1, 2, 3, 4, 5, 6, 7, 8]; // 每个位置对应的图片
+var isFinish = false; // 游戏是否结束
 
 // 初始化加载
 window.onload = function() {
+    setupRandomPosition();
     drawAllImage();
 }
 
 // 屏幕点击
 background.onclick = function(e) {
+    if (isFinish) {
+        return;
+    }
+
     var x = parseInt(e.offsetX / (padding + imageWidth));
     var y = parseInt(e.offsetY / (padding + imageWidth));
 
@@ -22,6 +28,10 @@ background.onclick = function(e) {
     var target = moveImageIfCanAtPosition(position);
     if (target >= 0) {
         refreshImagePositions(position, target);
+    }
+    if (checkIfFinish()) {
+        drawImageItem(imageIndexForPosition[lastIndex()], lastIndex());
+        isFinish = true;
     }
 };
 
@@ -51,7 +61,7 @@ var drawAllImage = function() {
             continue;
         }
         drawImageItem(index, position);
-    };
+    }
 }
 
 // 某个位置上的图片，如果能移动的话，就移动，并返回目标的位置，否则返回-1
@@ -106,6 +116,60 @@ var rectForPosition = function(position) {
     var x = (position % column) * (padding + imageWidth) + padding;
     var y = parseInt(position / column) * (padding + imageWidth) + padding;
     return [x, y, imageWidth, imageWidth];
+}
+
+// 检查是否完成
+var checkIfFinish = function() {
+    for (var index = 0; index < imageIndexForPosition.length; index++) {
+        if (index != imageIndexForPosition[index]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// 初始化随机顺序
+var setupRandomPosition = function() {
+    var list1 = [4, 3, 2, 8, 0, 7, 5, 6, 1];
+    var list2 = [2, 0, 5, 6, 8, 7, 3, 1, 4];
+    var list3 = [3, 7, 2, 4, 1, 6, 8, 0, 5];
+    var list4 = [3, 2, 4, 1, 7, 6, 5, 0, 8];
+    var lists = [list1, list2, list3, list4];
+
+    imageIndexForPosition = lists[parseInt(Math.random() * 4)];
+
+    // 获取空位位置
+    var emptyPosition = 0;
+    for (var i = imageIndexForPosition.length - 1; i >= 0; i--) {
+        if (imageIndexForPosition[i] == lastIndex()) {
+            emptyPosition = i;
+            break;
+        }
+    }
+    // 随机移动次数
+    var times = 10;
+    while (times--) {
+        // 获取随机数，决定空位哪个位置进行移动
+        var direction = parseInt(Math.random() * 4);
+
+        var target = -1;
+        if (direction == 0) {
+            target = emptyPosition - column;  // 上
+        } else if (direction == 1) {
+            target = (emptyPosition % column) == 0 ? -1 : emptyPosition - 1;  // 左 
+        } else if (direction == 2) {
+            target = emptyPosition + column;  // 右
+        } else if (direction == 3) {
+            target = (emptyPosition % column) == (column - 1) ? -1 : emptyPosition + 1;  // 下
+        }
+        if (target < 0 || target > lastIndex()) {  // 位置不合法，继续下一次循环
+            continue;
+        }
+        var result = moveImageIfCanAtPosition(target);
+        if (result >= 0) { // 如果移动成功，更新空位的位置
+            emptyPosition = target;
+        }
+    }
 }
 
 
