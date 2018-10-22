@@ -35,6 +35,35 @@ background.onclick = function(e) {
     }
 };
 
+// 键盘按钮事件
+document.onkeyup = function(event) {
+    var position = -1;
+    if (event.keyCode == '37') {  // 左
+        position = rightOfPosition(background.emptyPosition);
+    } else if (event.keyCode == '38') { // 上
+        position = bottomOfPosition(background.emptyPosition);
+    } else if (event.keyCode == '39') { // 右
+        position = leftOfPosition(background.emptyPosition);
+    } else if (event.keyCode == '40') { // 下
+        position = topOfPosition(background.emptyPosition);
+    } else if (event.keyCode == '65') { // A
+        position = rightOfPosition(background.emptyPosition);
+    } else if (event.keyCode == '87') { // W
+        position = bottomOfPosition(background.emptyPosition);
+    } else if (event.keyCode == '68') { // D
+        position = leftOfPosition(background.emptyPosition);
+    } else if (event.keyCode == '83') { // S
+        position = topOfPosition(background.emptyPosition);
+    }
+    if (position < 0 || position > lastIndex()) {
+        return;
+    } 
+    var target = moveImageIfCanAtPosition(position);
+    if (target >= 0) {
+        refreshImagePositions(position, target);
+    }
+}
+
 // 绘制一个图片，index图片索引，position图片位置（0 ～ column^2-1）
 var drawImageItem = function(index, position) {
     var img = new Image();
@@ -66,10 +95,10 @@ var drawAllImage = function() {
 
 // 某个位置上的图片，如果能移动的话，就移动，并返回目标的位置，否则返回-1
 var moveImageIfCanAtPosition = function(position) {
-    var top = position - column;  // 上方的位置
-    var left = (position % column) == 0 ? -1 : position - 1;  // 左方的位置，如果左边已经没有，则设置为-1
-    var bottom = position + column;  // 下方的位置
-    var right = (position % column) == (column - 1) ? -1 : position + 1;  // 右方的位置，如果右边已经没有，则设置为-1
+    var top = topOfPosition(position);
+    var left = leftOfPosition(position);
+    var bottom = bottomOfPosition(position);
+    var right = rightOfPosition(position);
 
     var targetPositioin = -1; // 目标位置
     if (isPositionEmpty(top)) {
@@ -86,6 +115,7 @@ var moveImageIfCanAtPosition = function(position) {
     if (targetPositioin >= 0) {
         imageIndexForPosition[targetPositioin] = imageIndexForPosition[position];
         imageIndexForPosition[position] = lastIndex();
+        background.emptyPosition = position; // 更新空位的位置
         return targetPositioin;
     }
     return -1;
@@ -128,6 +158,26 @@ var checkIfFinish = function() {
     return true;
 }
 
+// 获取左方位置，没有则返回-1
+var leftOfPosition = function(position) {
+    return (position % column) == 0 ? -1 : position - 1;
+}
+
+// 获取右方位置，没有则返回-1
+var rightOfPosition = function(position) {
+    return (position % column) == (column - 1) ? -1 : position + 1;
+}
+
+// 获取上方位置
+var topOfPosition = function(position) {
+    return position - column;
+}
+
+// 获取下方位置
+var bottomOfPosition = function(position) {
+    return position + column;
+}
+
 // 初始化随机顺序
 var setupRandomPosition = function() {
     var list1 = [4, 3, 2, 8, 0, 7, 5, 6, 1];
@@ -146,6 +196,8 @@ var setupRandomPosition = function() {
             break;
         }
     }
+    background.emptyPosition = emptyPosition;
+
     // 随机移动次数
     var times = 10;
     while (times--) {
@@ -154,13 +206,13 @@ var setupRandomPosition = function() {
 
         var target = -1;
         if (direction == 0) {
-            target = emptyPosition - column;  // 上
+            target = topOfPosition(emptyPosition);  // 上
         } else if (direction == 1) {
-            target = (emptyPosition % column) == 0 ? -1 : emptyPosition - 1;  // 左 
+            target = leftOfPosition(emptyPosition);  // 左 
         } else if (direction == 2) {
-            target = emptyPosition + column;  // 右
+            target = rightOfPosition(emptyPosition);  // 右
         } else if (direction == 3) {
-            target = (emptyPosition % column) == (column - 1) ? -1 : emptyPosition + 1;  // 下
+            target = bottomOfPosition(emptyPosition);  // 下
         }
         if (target < 0 || target > lastIndex()) {  // 位置不合法，继续下一次循环
             continue;
