@@ -12,7 +12,7 @@ var valueNull = 0; // 空白
 var valueBlock = 1; // 移动中的方块
 var valueDone = 2; // 已经完成的方块
 
-var rate = 500; // 计时刷新频率
+var rate = 400; // 计时刷新频率
 
 var map = new Array(row); // row * column 的数组
 
@@ -41,13 +41,13 @@ window.onload = function() {
 document.onkeyup = function(event) {
     var position = -1;
     if (event.keyCode == '37') {  // 左
-        // moveLeftIfCan();
+        moveLeftIfCan();
     } else if (event.keyCode == '38') { // 上
-
+    	changeIfCan();
     } else if (event.keyCode == '39') { // 右
-        // moveRightIfCan();
+        moveRightIfCan();
     } else if (event.keyCode == '40') { // 下
-
+    	downToDone();
     }
 }
 
@@ -111,6 +111,37 @@ var moveDownIfCan = function() {
 }
 
 // 旋转
+var changeIfCan = function() {
+	var tmp = new Array(9);
+	for (var i = 0; i < 3; i++) {
+		for (var j = 0; j < 3; j++) {
+			tmp[j + i * 3] = block1[i + (2 - j) * 3];
+		}
+	}
+	if (!canSetBlock(tmp, currentBlockPosition)) {
+		return false;
+	}
+	clearBlock(block1, currentBlockPosition);
+	block1 = tmp;
+	drawBlock(block1, currentBlockPosition);
+	return true;
+}
+
+// 下坠
+var downToDone = function () {
+	var nextPosition = {};
+	nextPosition.x = currentBlockPosition.x;
+	nextPosition.y = currentBlockPosition.y;
+	while (canSetBlock(block1, nextPosition) || nextPosition.y == 0) {
+		nextPosition.y += 1;
+	}
+	nextPosition.y -= 1;
+	clearBlock(block1, currentBlockPosition);
+	currentBlockPosition = nextPosition;
+	drawBlock(block1, currentBlockPosition);
+	setBlockToMap(block1, currentBlockPosition);
+	startNewBlock();
+}
 
 // 绘制单个方块，(0, 0) 在左上角
 var drawSquare = function(x, y) {
@@ -124,17 +155,15 @@ var drawSquare = function(x, y) {
 
 // 清除方块
 var clearBlock = function(block, position) {
-	// 清除每个竖直方向的第一个
-	for (var i = 0; i < 3; i++) {
-		for (var j = 0; j < 3; j++) {
-			if (block[i + j*3] == valueBlock) {
-				context.fillStyle = '#eeeeee';
-				var rX = position.x + i - 1;
-				var rY = position.y + j - 1;
-				var rect = rectForPosition(rX, rY);
-				context.fillRect(rect[0], rect[1], rect[2], rect[3]);
-				break;
-			}
+	for (var i = 0; i < 9; i++) {
+		var xOffset = (i % 3) - 1;
+		var yOffset = parseInt(i / 3) - 1;
+		if (block[i] != valueNull) {
+			context.fillStyle = '#eeeeee';
+			var rX = position.x + xOffset;
+			var rY = position.y + yOffset;
+			var rect = rectForPosition(rX, rY);
+			context.fillRect(rect[0], rect[1], rect[2], rect[3]);
 		}
 	}
 }
