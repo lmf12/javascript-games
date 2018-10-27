@@ -24,10 +24,6 @@ window.onload = function() {
 
 // 键盘按钮抬起事件
 document.onkeyup = function(event) {
-    if (isFinish) {
-        return;
-    }
-
     var key; // 待获取的按键元素
 
     var isPlayer1 = true; // 当前操作是否属于玩家1
@@ -66,6 +62,10 @@ document.onkeyup = function(event) {
     key.style.backgroundColor = '#ffffff';
     key.style.borderWidth = '1px';
     key.children[0].style.color = '#555555';
+
+    if (isFinish) {
+        return;
+    }
 
     if (position < 0 || position > lastIndex()) {
         return;
