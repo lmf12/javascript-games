@@ -37,6 +37,10 @@ background.onclick = function(e) {
 
 // 键盘按钮事件
 document.onkeyup = function(event) {
+    if (isFinish) {
+        return;
+    }
+
     var position = -1;
     if (event.keyCode == '37') {  // 左
         position = rightOfPosition(background.emptyPosition);
@@ -61,6 +65,10 @@ document.onkeyup = function(event) {
     var target = moveImageIfCanAtPosition(position);
     if (target >= 0) {
         refreshImagePositions(position, target);
+    }
+    if (checkIfFinish()) {
+        drawImageItem(imageIndexForPosition[lastIndex()], lastIndex());
+        isFinish = true;
     }
 }
 
