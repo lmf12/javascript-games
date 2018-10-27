@@ -13,3 +13,47 @@ canvas {
 .item {
 	flex: 1;
 }
+
+.box {
+	display: block;
+    margin: auto;
+    width: 170;
+    height: 110;
+}
+
+.key {
+	width: 50;
+	height: 50;
+	border-style: solid;
+	border-color: #aaaaaa;
+	border-width: 1px;
+	border-radius: 5px;
+	position: absolute;
+}
+
+.key_text {
+	text-align: center;
+	color: #555555;
+}
+
+#key_w, #key_top {
+	margin-left: 60;
+}
+
+#key_a, #key_left {
+	margin-top: 60;
+}
+
+#key_s, #key_bottom {
+	margin-top: 60;
+	margin-left: 60;
+}
+
+#key_d, #key_right {
+	margin-top: 60;
+	margin-left: 120;
+}
+
+
+
+

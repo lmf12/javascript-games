@@ -22,11 +22,13 @@ window.onload = function() {
     drawAllImage(imageIndexForPositionOfCanvas2, context2);
 }
 
-// 键盘按钮事件
+// 键盘按钮抬起事件
 document.onkeyup = function(event) {
     if (isFinish) {
         return;
     }
+
+    var key; // 待获取的按键元素
 
     var isPlayer1 = true; // 当前操作是否属于玩家1
 
@@ -34,24 +36,37 @@ document.onkeyup = function(event) {
     if (event.keyCode == '37') {  // 左
         position = rightOfPosition(canvas2.emptyPosition);
         isPlayer1 = false;
+        key = document.getElementById('key_left');
     } else if (event.keyCode == '38') { // 上
         position = bottomOfPosition(canvas2.emptyPosition);
         isPlayer1 = false;
+        key = document.getElementById('key_top');
     } else if (event.keyCode == '39') { // 右
         position = leftOfPosition(canvas2.emptyPosition);
         isPlayer1 = false;
+        key = document.getElementById('key_right');
     } else if (event.keyCode == '40') { // 下
         position = topOfPosition(canvas2.emptyPosition);
         isPlayer1 = false;
+        key = document.getElementById('key_bottom');
     } else if (event.keyCode == '65') { // A
         position = rightOfPosition(canvas1.emptyPosition);
+        key = document.getElementById('key_a');
     } else if (event.keyCode == '87') { // W
         position = bottomOfPosition(canvas1.emptyPosition);
+        key = document.getElementById('key_w');
     } else if (event.keyCode == '68') { // D
         position = leftOfPosition(canvas1.emptyPosition);
+        key = document.getElementById('key_d');
     } else if (event.keyCode == '83') { // S
         position = topOfPosition(canvas1.emptyPosition);
+        key = document.getElementById('key_s');
     }
+    // 样式复原
+    key.style.backgroundColor = '#ffffff';
+    key.style.borderWidth = '1px';
+    key.children[0].style.color = '#555555';
+
     if (position < 0 || position > lastIndex()) {
         return;
     } 
@@ -68,6 +83,32 @@ document.onkeyup = function(event) {
         drawImageItem(context ,imageIndexForPosition[lastIndex()], lastIndex());
         isFinish = true;
     }
+}
+
+// 键盘按钮按下事件
+document.onkeydown = function(event) {
+    var key; // 待获取的按键元素
+    if (event.keyCode == '37') {  // 左
+        key = document.getElementById('key_left');
+    } else if (event.keyCode == '38') { // 上
+        key = document.getElementById('key_top');
+    } else if (event.keyCode == '39') { // 右
+        key = document.getElementById('key_right');
+    } else if (event.keyCode == '40') { // 下
+        key = document.getElementById('key_bottom');
+    } else if (event.keyCode == '65') { // A
+        key = document.getElementById('key_a');
+    } else if (event.keyCode == '87') { // W
+        key = document.getElementById('key_w');
+    } else if (event.keyCode == '68') { // D
+        key = document.getElementById('key_d');
+    } else if (event.keyCode == '83') { // S
+        key = document.getElementById('key_s');
+    }
+    // 样式改动
+    key.style.backgroundColor = '#000000';
+    key.style.borderWidth = '0px';
+    key.children[0].style.color = '#ffffff';
 }
 
 // 绘制所有图片
