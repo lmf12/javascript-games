@@ -8,7 +8,7 @@
 
 * 预览图：
 
-![](https://github.com/lmf12/javascript-games/blob/master/readme-image/puzzle.jpg)
+![](https://github.com/lmf12/ImageHost/blob/master/javascript-games/puzzle.jpg)
 
 * 说明：一个简单的移动方块游戏，开始时生成随机序列，目标是将整张图片还原。
 * 操作：支持鼠标的点击移动，以及键盘的 `W、S、A、D` 以及 `↑、↓、←、→` 控制。
@@ -19,7 +19,7 @@
 
 * 预览图：
 
-![](https://github.com/lmf12/javascript-games/blob/master/readme-image/puzzle-pk.jpg)
+![](https://github.com/lmf12/ImageHost/blob/master/javascript-games/puzzle-pk.jpg)
 
 * 说明：在原来「拼图」的基础上进行拓展，实现了一个对战的版本，允许两位玩家同时进行游戏，率先完成的一方即可获胜。
 * 操作：玩家一通过键盘的 `W、S、A、D` 进行控制，玩家二通过键盘的 `↑、↓、←、→` 进行控制。
