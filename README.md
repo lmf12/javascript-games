@@ -26,7 +26,7 @@
 * 在线体验：[拼图对战版](http://www.lymanli.com/game/puzzle-pk/)
 * 源码地址：[puzzle-pk](https://github.com/lmf12/javascript-games/tree/master/puzzle-pk)
 
-### （2025-11-15 更新）
+### 2025-11-15 更新
 
 本来以为，这个项目会慢慢增加很多自己写的小游戏，没想到，第一个游戏就是最后一个了……
 
