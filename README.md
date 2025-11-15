@@ -26,4 +26,16 @@
 * 在线体验：[拼图对战版](http://www.lymanli.com/game/puzzle-pk/)
 * 源码地址：[puzzle-pk](https://github.com/lmf12/javascript-games/tree/master/puzzle-pk)
 
-### 期待更多...
+### （2025-11-15 更新）
+
+本来以为，这个项目会慢慢增加很多自己写的小游戏，没想到，第一个游戏就是最后一个了……
+
+当时学 JS 的时候，也没想到现在的 AI 开发 Web 程序会如此方便。
+
+不管怎么说，有空的时候，可以看看我最近用 AI 写的小游戏：
+
+* [Color Sleuth](https://miniplay.io/games/color-sleuth)
+* [Block Sweep](https://miniplay.io/games/block-sweep)
+
+还有我维护的 [在线小游戏](https://miniplay.io/) 网站。
+  
